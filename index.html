@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>福井県イベント情報</title>
+        <link rel="styleseet" href="styleseet.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1><div id="header-logo"><a href="index.html">福井県イベント情報</a></div></h1>
+              <form id="seachForm" onsubmit="return false">
+                  <input id="search" type="search" v-model="keyWord" placeholder="キーワード・タグ検索">
+                  <input type="submit" name="submitButton" value="検索">
+　　　　　　      
+              </form>
+        </header>
+
+        <div id="Main">
+            <section class="event" v-on:click="pickup" v-for="items" >
+                <div class="name">{{eventname}}</div>
+                <div class="place">{{place}}</div>
+                <div class="tags">{{tags}}</div>
+            </section>   
+        </div>  
+        
+        <script src="./main.js"></script>     
+    </body>
+</html>

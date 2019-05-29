@@ -1,0 +1,16 @@
+body{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+header{
+    background-color: white;
+    color: dimgray;
+    height: 100px;
+}
+
+#header-logo{
+    float: left;
+    font-size: 33px;
+    padding: 33px 50px
+}
+
