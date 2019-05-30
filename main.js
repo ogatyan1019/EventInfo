@@ -1,13 +1,12 @@
 var list = new Vue({
-    el: '#main',
-    data () {
-      return {
-        events: []
-      }
+    el: '#contents',
+    data: {
+          events: []
     },
-    mounted () {
+    mounted() {
       axios
          .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
-        .then(response => (this.events= response.data.events))
-    }
-  })
+         .then (responce => {this.events = responce.data})
+    },
+   
+});

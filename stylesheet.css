@@ -1,0 +1,37 @@
+body{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    position:absolute
+}
+
+header{
+    background-color: white;
+    color: dimgray;
+    height: 100px;
+}
+
+.flex{
+    display: flex;
+}
+
+.category{
+    padding-left: 30px;
+}
+.boxdesign{
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: #000000;
+    background: white;
+    border-top: solid 5px #57c6e7;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.158);
+}
+.event_name{
+    font-size: 24px;
+    padding: 1px 50px 1px 0px ;
+}
+
+.main{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+

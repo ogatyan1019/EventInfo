@@ -3,28 +3,37 @@
     <head>
         <meta charset="utf-8">
         <title>福井県イベント情報</title>
-        <link rel="styleseet" href="styleseet.css">
-        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
         <header>
-            <h1><div id="header-logo"><a href="index.html">福井県イベント情報</a></div></h1>
+            <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>
               <form id="seachForm" onsubmit="return false">
                   <input id="search" type="search" v-model="keyWord" placeholder="キーワード・タグ検索">
-                  <input type="submit" name="submitButton" value="検索">
 　　　　　　      
               </form>
         </header>
 
-        <div id="Main">
-            <section class="event" v-on:click="pickup" v-for="items" >
-                <div class="name">{{eventname}}</div>
-                <div class="place">{{place}}</div>
-                <div class="tags">{{tags}}</div>
-            </section>   
+        <div class="main">
+            <div id="contents"  >
+                <section class="info" v-for="event in events" v-on:click="pickup(event)" >
+                    <div class="boxdesign">
+                            <div class="flex">     
+                             <div class="startdate">{{event.start_date}}</div>
+                             <div class="category">{{event.category}}</div>
+                            </div>
+                             <div class="event_name">{{event.event_name}}</div>
+                            <div class="contact">{{event.contact}}</div>
+                    </div>  
+                </section> 
+            </div>
         </div>  
         
-        <script src="./main.js"></script>     
+        
+        <script src="main.js"></script>  
+          
     </body>
 </html>
