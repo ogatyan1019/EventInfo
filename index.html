@@ -1,100 +1,101 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
     <head>
         <meta charset="utf-8">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <link href="style_mobile.css" rel="stylesheet" media="(max-device-aspect-ratio: 3/4)">
-        <link href="style_pc.css" rel="stylesheet" media="(min-device-aspect-ratio: 3/4)">
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <title>福井県イベント情報</title>
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <title>福井イベント情報</title>
     </head>
     <body>
-      <header>
-        <h1><a id="titleHeader" href="./index.html">福井イベント情報</a></h1>
-        <form id="searchForm" onsubmit="return false;">
-          <input id="search" type="search" v-model="keyword" placeholder="Search by event name, category, or others.">
-          <div id="changeRange">
-            <span class="changeRangeButton" v-on:click="setStep(10)" v-bind:class="{ buttonActive: step==10 }">10件ずつ表示</span>
-            <hr class="verticalHr">
-            <span class="changeRangeButton" v-on:click="setStep(30)" v-bind:class="{ buttonActive: step==30 }">30件ずつ表示</span>
-            <hr class="verticalHr">
-            <span class="changeRangeButton" v-on:click="setStep(-1)" v-bind:class="{ buttonActive: step==-1 }">全件表示</span>
-          </div>
-        </form>
-      </header>
+        <header>
+            <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>
+              <form id="seachform" onsubmit="return false">
+                     <input id="search" type="search" v-model="key_word" placeholder="キーワード・タグ検索">
+　　　　　　        <div class="change_range">
+                        <div class="change_range_button" v-on:click="choice_range(10)">10件ずつ表示</div>
+                        <div class="change_range_button" v-on:click="choice_range(30)">30件ずつ表示</div>
+                        <div class="change_range_button" v-on:click="choice_range(-1)">全て表示</div>
 
-      <div id="contents">
-        <article class="smallArticle" v-for="event in activeEvents()" v-on:click="zoom(event)" v-bind:class="{ isSleep: status(event)!='開催中' }">
-          <div class="status" v-bind:style="{background: categoryColor(event.category)}">{{ status(event) }}</div>
-          <h2 class="event_name">{{ event.event_name }}</h2>
-          <div class="contact">{{ event.contact }}</div>
-          <div class="category" v-on:click.stop="searchCategory(event)" v-bind:style="{color: categoryColor(event.category)}">{{ event.category }}</div>
-        </article>
-        <form id="indexForm">
-            <span class="pageButton" v-on:click="back" v-bind:class="{ buttonHidden: isBegin() }">back</span>
-            <span class="pageNumber">{{ currentPage + 1 }} of {{ maxPage() }}</span>
-            <span class="pageButton" v-on:click="next" v-bind:class="{ buttonHidden: isEnd() }">next</span>
-        </form>
-      </div>
+                   </div>
+              </form>
+        </header>
 
-      <footer>
-        <hr class="hr">
-        <small>Copyright &copy; Fukui Event Information All Rights Reserved.</small>
-      </footer>
+        <div class="main">
+            <div id="contents"  >
+                <section class="info" v-for="event in events()" v-on:click="pickup(event)" >
+                    <div class="boxdesign">
+                            <div class="flex">  
+                             <div class="state">{{state(event)}}</div>   
+                             <div class="startdate">{{event.start_date}}</div>
+                             <div class="category">{{event.category}}</div>
+                            </div>
+                             <div class="event_name">{{event.event_name}}</div>
+                             <div class="event_place">{{event.event_place}}</div>
+                    </div>  
+                </section> 
+                <form id="change_page">
+                    <div class="change_button" v-on:click="back">Back</div>
+                    <div class="page_nunber">{{current_page + 1 }}ページ ／ {{all_pages}}ページ</div>
+                    <div class="change_button" v-on:click="next">Next</div>
+                </form>
+            </div>
+        </div>  
 
-      <div id="zoomEvent" v-if="isZoom" v-on:click="cancel">
-        <article class="zoomArticle" v-on:click="cancelCancel">
-          <div class="zoomStatus" v-bind:style="{background: categoryColor(zoomEvent.category)}">
-            <span>{{ status(zoomEvent) }}</span>
-            <i class="fas fa-times" v-on:click="cancel"></i>
-          </div>
-          <h2 class="zoomEvent_name">{{ zoomEvent.event_name }}</h2>
-          <p class="zoomDescription">{{ zoomEvent.description }}</p>
-          <dl>
-            <div v-if="zoomEvent.start_date == zoomEvent.end_date">
-              <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">開催日</dt>
-              <dd>{{ zoomEvent.start_date }}</dd>
-            </div>
-            <div v-if="zoomEvent.start_date != zoomEvent.end_date">
-              <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">開催期間</dt>
-              <dd>{{ zoomEvent.start_date }} - {{ zoomEvent.end_date }}</dd>
-            </div>
-          </dl>
-          <dl>
-            <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">開催地</dt>
-            <dd>{{ zoomEvent.event_place }}<span v-if="zoomEvent.address != ''">（{{ zoomEvent.address }}）</span></dd>
-            <div v-if="zoomEvent.event_place_url != ''">
-              <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">ウェブサイト</dt>
-              <dd><a class="url" v-bind:href= "zoomEvent.event_place_url" target="_blank">{{ zoomEvent.event_place_url }}</a></dd>
-            </div>
-            <div v-if="zoomEvent.transportation != ''">
-              <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">交通手段</dt>
-              <dd>{{ zoomEvent.transportation }}</dd>
-            </div>
-          </dl>
-          <dl>
-            <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">問い合わせ先</dt>
-            <dd>{{ zoomEvent.contact }}（TEL: {{ zoomEvent.contact_phone_number }}）</dd>
-            <div>
-            <dt v-if="zoomEvent.mail_address != ''">メールアドレス</dt>
-            <dd>{{ zoomEvent.mail_address }}</dd>
-            </div>
-          </dl>
-          <dl>
-            <div v-if="zoomEvent.remarks != ''">
-            <dt v-bind:style="{color: categoryColor(zoomEvent.category)}">備考</dt>
-            <dd class="zoomRemarks">{{ zoomEvent.remarks }}</dd>
-            </div>
-          </dl>
-          <div class="zoomCategory" v-bind:style="{color: categoryColor(zoomEvent.category)}">{{ zoomEvent.category }}</div>
-        </article>
-      </div>
+        <footer>
+            <form id="go_top">
+                <div class="go_top_button" v-on:click="sclool_top">トップに戻る</div>
+            </form>
+        </footer>
 
+        <div id="pickup_event">
+            <section id="pickup_section"  v-on:click="back_to_main">
+                <h2 class="pickup_neme">{{pickup_section.event_name}}</h2>
+                <h5>#{{pickup_section.category}}</h5>
+                <p class="pickup_description">{{pickup_section.description}}</p>
+                <dl>
+                    <div v-if:="pickup_section.start_date == pickup_section.end_date">
+                        <dt>開催予定日</dt>
+                        <dd>{{pickup_section.start_date}}</dd>
+                    </div>
+                    
+                    <div v-if:="pickup_section.start_date != pickup_section.end_date">
+                        <dt>開催期間</dt>
+                        <dd>{{pickup_section.start_date}}　～　{{pickup_section.end_date}}</dd>
+                    </div>
+                    
+                    <dt>開催地</dt>
+                    <dd>{{pickup_section.event_place}}</dd>
+                    
+                    <div v-if:="pickup_section.event_place_url != ''">
+                        <dt>ウェブサイト</dt>
+                        <dd><a class="url" v-bind:href= "pickup_section.event_place_url" target="_blank">{{ pickup_section.event_place_url }}</a></dd>
+                    </div>
 
-      <script src="main.js"></script>
-  </body>
+                    <div v-if="pickup_section.transportation != ''">
+                            <dt>交通手段</dt>
+                            <dd>{{ pickup_section.transportation }}</dd>
+                    </div>
+
+                    <dt>お問い合わせ先</dt>
+                    <dd>{{pickup_section.contact}} (TEL：{{pickup_section.contact_phone_nunber}}</dd>
+
+                    <div v-if="pickup_section.mail_addres != '' ">
+                        <dt>メールアドレス</dt>
+                        <dd>{{pickup_section.mail_addres}}</dd>
+                    </div>
+
+                    <div v-if:="pickup_section.remarks != '' ">
+                        <dt>その他</dt>
+                        <dd>{{pickup_section.remarks}}</dd>
+                    </div>
+                </dl>
+            </section>
+        </div>
+        
+        
+        <script src="main.js"></script>  
+          
+    </body>
 </html>
