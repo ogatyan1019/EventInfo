@@ -8,7 +8,6 @@ var serch = new Vue({
       reset:function(){
         list.currentPage = 0;
         this.before_key_words = this.key_words;
-        scrollTo(0, 0);
       },
     }
 })
@@ -22,8 +21,8 @@ new Vue({
   },
 
   methods:{
-    selected_Lange: function(){
-      return this.dispItemSize = selectLange;
+    selected_Length: function(){
+      return this.dispItemSize = selectLength;
     },
     inEventNo:function(){
         return this.AlleventNo = events;
@@ -65,14 +64,14 @@ new Vue({
 
 })
 //件数変更
-var change_Length = new Vue({
+var Length_change = new Vue({
   el: '#change_Length',
   data:{
-    selectLange:10,
+    selectLength:10,
   },
   methods:{
     LengthChange:function(){
-      this.selectLange = selectLange;
+      this.selectLength = selectLength;
     }
   }
 })
@@ -91,16 +90,18 @@ var list = new Vue({
   methods:{
     state: function(event){
       var nowDate = [new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate()];
-      var eventStartDate = event.start_date.split('/');
-      var eventEndDate = event.end_date.split('/');
+      var eventStartDate = event.start_date;
+      var eventEndDate = event.end_date;
 
-      if(dateCmp(eventStartDate, nowDate) < 0)
+      if(eventStartDate < nowDate)
           return '開催予定';
-      if(dateCmp(nowDate, eventEndDate) < 0)
+      if(nowDate < eventEndDate)
           return '終了';
       return '開催中';
     },
-
+    Length_change: function(){
+      return Length_change.selectLength
+    }
    }   
  
 });
