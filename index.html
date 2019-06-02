@@ -20,32 +20,35 @@
                         <button v-on:click="LengthChange(-1)">全件表示</button>
                     </div>
         </header>
-
-        <div class="main">
-            <div id="contents"  >
-                <section class="info" v-for="event in Length_change()" v-on:click="pickup(event)" >
-                    <div class="boxdesign">
-                            <div class="flex">  
-                             <div class="state">{{state(event)}}</div>   
-                             <div class="startdate">{{event.start_date}}</div>
-                             <div class="category">{{event.category}}</div>
-                            </div>
-                             <div class="event_name">{{event.event_name}}</div>
-                             <div class="event_place">{{event.event_place}}</div>
-                    </div>  
-                </section> 
-                <div id="pagenation">
-                    <ul class="pagination">
-                            <li v-on="click: showFirst" class="{{isStartPage ? 'disabled' : ''}}"><a>&laquo;</a></li>
-                            <li v-on="click: showPrev" class="{{isStartPage ? 'disabled' : ''}}"><a>&lt;</a></li>
-                            <li v-on="click: showPage($index)" class="{{page == $index ? 'active': ''}}" v-repeat="pageCount"><a>{{$index + 1}}</a></li>
-                            <li v-on="click: showNext" class="{{isEndPage ? 'disabled' : ''}}"><a>&gt;</a></li>
-                            <li v-on="click: showLast" class="{{isEndPage ? 'disabled' : ''}}"><a>&raquo;</a></li>
-                    </ul>
+        <div id="app" class="container">
+                <nav>
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a @click="first" class="page-link" href="#">&laquo;</a>
+                    </li>
+                    <li class="page-item">
+                      <a @click="prev" class="page-link" href="#">&lt;</a>
+                    </li>
+              
+                    <li
+                      v-for="i in displayPageRange"
+                      class="page-item"
+                      :class="{active: i-1 === currentPage}">
+                      <a @click="pageSelect(i)" class="page-link" href="#">{{ i }}</a>
+                    </li>
+              
+                    <li class="page-item">
+                      <a @click="next" class="page-link" href="#">&gt;</a>
+                    </li>
+                    <li class="page-item">
+                      <a @click="last" class="page-link" href="#">&raquo;</a>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="list-group" v-for="items in displayItems" >
+                    {{ items.event_name }}
                 </div>
-            </div>
-        </div>  
-
+        </div>
         <footer>
             <form id="go_top">
                 <div class="go_top_button" v-on:click="sclool_top">トップに戻る</div>

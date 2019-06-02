@@ -1,68 +1,92 @@
-var serch = new Vue({
-    el: '#seachform',
-    data:{
-       before_key_words:'',
-       key_words:'',
-    },
-    methods:{
-      reset:function(){
-        list.currentPage = 0;
-        this.before_key_words = this.key_words;
-      },
+var page_display = new Vue({
+  el: "#app",
+  data () {
+    return {
+      currentPage: 0,  
+      size: 10,        
+      pageRange: 5,   
+      items: []         
     }
-})
-//ページボタン関連
-new Vue({
-  el: '#pagenation',
-  data:{
-    page :0,
-    dispItemSize : 10,
-    AlleventNo: []
   },
-
-  methods:{
-    selected_Length: function(){
-      return this.dispItemSize = selectLength;
-    },
-    inEventNo:function(){
-        return this.AlleventNo = events;
-    } ,
-    showFirst: function() {
-      this.page = 0;
-    },
-    showPrev: function() {
-      if (this.isStartPage) return;
-      this.page--;
-    },
-    showNext: function() {
-      if (this.isEndPage) return;
-      this.page++;
-    },
-    showLast: function() {
-      this.page = Math.floor((this.AlleventNo.length - 1) / this.dispItemSize);
-    },
-     showPage: function(index) {
-      this.page = index;
-  }
+  mounted () {
+    axios
+       .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
+       .then (function(res){
+        page_display.items = res.data;
+    });
   },
+  computed: {
   
-  computed:{
-    dipsItems: function() {
-        var startPage = this.page * this.dispItemSize;
-        return this.data.slice(startPage, startPage + this.dispItemSize);
-      },
-    isStartPage: function(){
-        return (this.page == 0);
-      },
-    isEndPage: function(){
-        return ((this.page + 1) * this.dispItemSize >= this.data.length);
-      },
-    pageCount: function() {
-        return Math.ceil(this.data.length / this.dispItemSize);
-      }
-}
+    pages () {
+      return Math.ceil(this.items.length / this.size);
+    },
+    
+    displayPageRange () {
+      const half = Math.ceil(this.pageRange / 2);
+      let start, end;
 
-})
+      if (this.pages < this.pageRange) {
+        start = 1;
+        end = this.pages;
+      
+      } else if (this.currentPage < half) {
+        start = 1;
+        end = start + this.pageRange - 1;
+
+      } else if (this.pages - half < this.currentPage) {
+        end = this.pages;
+        start = end - this.pageRange + 1;
+
+      } else {
+        start = this.currentPage - half + 1;
+        end = this.currentPage + half;
+      }
+    
+      let indexes = [];
+      for (let i = start; i <= end; i++) {
+        indexes.push(i);
+      }
+      return indexes;
+    },
+    displayItems () {
+      const head = this.currentPage * this.size;
+      return this.items.slice(head, head + this.size);
+    },
+    isSelected (page) {
+      return page - 1 === this.currentPage;
+    }
+  },
+  methods: {
+    first () {
+      this.currentPage = 0;
+      this.selectHandler();
+    },
+    last () {
+      this.currentPage = this.pages - 1;
+      this.selectHandler();
+    },
+    prev () {
+      if (0 < this.currentPage) {
+        this.currentPage--;
+        this.selectHandler();
+      }
+    },
+    next () {
+      if (this.currentPage < this.pages - 1) {
+        this.currentPage++;
+        this.selectHandler();
+      }
+    },
+
+    pageSelect (index) {
+      this.currentPage = index - 1;
+      this.selectHandler();
+    },
+
+    selectHandler () {
+    }
+  }
+});
 //件数変更
 var Length_change = new Vue({
   el: '#change_Length',
@@ -71,37 +95,8 @@ var Length_change = new Vue({
   },
   methods:{
     LengthChange:function(){
-      this.selectLength = selectLength;
+      this.selectLength = this.selectLength;
     }
   }
 })
 
-var list = new Vue({
-  el: '#contents',
-  data: {
-        events: []
-  },
-  mounted() {
-    axios
-       .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
-       .then (responce => {this.events = responce.data})
-  },
-
-  methods:{
-    state: function(event){
-      var nowDate = [new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate()];
-      var eventStartDate = event.start_date;
-      var eventEndDate = event.end_date;
-
-      if(eventStartDate < nowDate)
-          return '開催予定';
-      if(nowDate < eventEndDate)
-          return '終了';
-      return '開催中';
-    },
-    Length_change: function(){
-      return Length_change.selectLength
-    }
-   }   
- 
-});
