@@ -14,46 +14,46 @@
               <form id="seachform" onsubmit="return false">
                      <input id="search" type="search" v-model="key_words" placeholder="キーワード・タグ検索">
               </form>
-　　　　　　        <div id="change_Length">
-                        <button v-on:click="LengthChange(10)">10件ずつ表示</button>
-                        <button v-on:click="LengthChange(30)">30件ずつ表示</button>
-                        <button v-on:click="LengthChange(-1)">全件表示</button>
+　　　　　　         <div id="change_Length">
+                          <button class="change_length" v-on:click="LengthChange(10)">10件ずつ表示</button>
+                          <button class="change_length" v-on:click="LengthChange(30)">30件ずつ表示</button>
+                          <button class="change_length" v-on:click="LengthChange(-1)">全件表示</button>
                     </div>
         </header>
-        <div id="app" class="container">
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item">
-                      <a @click="first" class="page-link" href="#">&laquo;</a>
-                    </li>
-                    <li class="page-item">
-                      <a @click="prev" class="page-link" href="#">&lt;</a>
-                    </li>
-              
-                    <li
-                      v-for="i in displayPageRange"
-                      class="page-item"
-                      :class="{active: i-1 === currentPage}">
-                      <a @click="pageSelect(i)" class="page-link" href="#">{{ i }}</a>
-                    </li>
-              
-                    <li class="page-item">
-                      <a @click="next" class="page-link" href="#">&gt;</a>
-                    </li>
-                    <li class="page-item">
-                      <a @click="last" class="page-link" href="#">&raquo;</a>
-                    </li>
-                  </ul>
-                </nav>
-                <div class="list-group" v-for="items in displayItems" >
-                    {{ items.event_name }}
-                </div>
+
+        <div class="main">
+             <div id="app" class="container">
+                    <div class="list-group" v-for="items in displayItems" >
+                         <div class="boxdesign">
+                            <div class="start_date">{{items.start_date}}</div>
+                            <div class="event_name">{{items.event_name}}</div>
+                          <div class="float">
+                            <div class="event_place">{{items.event_place}}</div>
+                            <div class="category">カテゴリー：{{items.category}}</div>
+                          </div>
+                        </div>
+                    </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a v-on:click="first" class="page-link" href="#">&laquo;</a>
+                            </li>
+                            <li class="page-item">
+                                <a v-on:lick="prev" class="page-link" href="#">&lt;</a>
+                            </li>
+                            <li v-for="i in displayPageRange" class="page-item" :class="{active: i-1 === currentPage}">
+                                <a v-on:click="pageSelect(i)" class="page-link" href="#">{{ i }}</a>                               
+                            </li>
+                            <li class="page-item">
+                                <a v-on:click="next" class="page-link" href="#">&gt;</a>
+                            </li>
+                            <li class="page-item">
+                                <a v-on:click="last" class="page-link" href="#">&raquo;</a>
+                            </li>
+                        </ul>
+                    </nav>
+               </div>
         </div>
-        <footer>
-            <form id="go_top">
-                <div class="go_top_button" v-on:click="sclool_top">トップに戻る</div>
-            </form>
-        </footer>
 
         <script src="main.js"></script>  
           

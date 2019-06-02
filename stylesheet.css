@@ -1,6 +1,9 @@
 body{
     font-family: Georgia, 'Times New Roman', Times, serif;
-    position:absolute
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 header{
@@ -12,5 +15,63 @@ header{
 #header-logo{
     padding: 10px 20px;;
 }
+.change_Length{
+    margin:20px;
+    width: 100%;
+}
+
+.change_length{
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
+
+.change_length+.change_length{
+    border-left:0;
+    border-right: 1px solid #333;
+}
+
+.main{
+    background-color: rgba(6, 0, 24, 0.034);
+    width: 100%;
+    position: relative;
+    top: 100px;
+}
+
+.boxdesign{
+    
+    padding: 10px;
+    margin: 40px 40px;
+    color: #5d627b;
+    background: white;
+    border-top: solid 5px #5d627b;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+}
+
+.start_date{
+    color: black;
+}
+
+.event_place{
+    color: black;
+    margin-left: 15px;
+}
+.event_name{
+    font-size: 20px;
+    color: black;
+    margin-left: 15px;
+}
+
+.category{
+    color: black;
+    font: size 5px;
+    padding-left: 400px;
+}
+
+.pagination{
+    text-align: center;
+}
 
 
+footer{
+    margin-top: 4vw;
+}

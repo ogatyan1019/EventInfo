@@ -11,9 +11,14 @@ var page_display = new Vue({
   mounted () {
     axios
        .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
-       .then (function(res){
-        page_display.items = res.data;
+       .then (function(res){page_display.items = res.data;
     });
+  },
+
+  methods:{
+    size:function(){
+      return this.selectLength = this.size;
+    }
   },
   computed: {
   
