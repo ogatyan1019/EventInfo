@@ -12,19 +12,18 @@
         <header>
             <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>
               <form id="seachform" onsubmit="return false">
-                     <input id="search" type="search" v-model="key_word" placeholder="キーワード・タグ検索">
-　　　　　　        <div class="change_range">
-                        <div class="change_range_button" v-on:click="choice_range(10)">10件ずつ表示</div>
-                        <div class="change_range_button" v-on:click="choice_range(30)">30件ずつ表示</div>
-                        <div class="change_range_button" v-on:click="choice_range(-1)">全て表示</div>
-
-                   </div>
+                     <input id="search" type="search" v-model="key_words" placeholder="キーワード・タグ検索">
               </form>
+　　　　　　        <div id="change_Length">
+                        <button v-on:click="LengthChange(10)">10件ずつ表示</button>
+                        <button v-on:click="LengthChange(30)">30件ずつ表示</button>
+                        <button v-on:click="LengthChange(-1)">全件表示</button>
+                    </div>
         </header>
 
         <div class="main">
             <div id="contents"  >
-                <section class="info" v-for="event in events()" v-on:click="pickup(event)" >
+                <section class="info" v-for="event in selectLange()" v-on:click="pickup(event)" >
                     <div class="boxdesign">
                             <div class="flex">  
                              <div class="state">{{state(event)}}</div>   
@@ -35,11 +34,15 @@
                              <div class="event_place">{{event.event_place}}</div>
                     </div>  
                 </section> 
-                <form id="change_page">
-                    <div class="change_button" v-on:click="back">Back</div>
-                    <div class="page_nunber">{{current_page + 1 }}ページ ／ {{all_pages}}ページ</div>
-                    <div class="change_button" v-on:click="next">Next</div>
-                </form>
+                <div id="pagenation">
+                    <ul class="pagination">
+                            <li v-on="click: showFirst" class="{{isStartPage ? 'disabled' : ''}}"><a>&laquo;</a></li>
+                            <li v-on="click: showPrev" class="{{isStartPage ? 'disabled' : ''}}"><a>&lt;</a></li>
+                            <li v-on="click: showPage($index)" class="{{page == $index ? 'active': ''}}" v-repeat="pageCount"><a>{{$index + 1}}</a></li>
+                            <li v-on="click: showNext" class="{{isEndPage ? 'disabled' : ''}}"><a>&gt;</a></li>
+                            <li v-on="click: showLast" class="{{isEndPage ? 'disabled' : ''}}"><a>&raquo;</a></li>
+                    </ul>
+                </div>
             </div>
         </div>  
 
@@ -49,52 +52,6 @@
             </form>
         </footer>
 
-        <div id="pickup_event">
-            <section id="pickup_section"  v-on:click="back_to_main">
-                <h2 class="pickup_neme">{{pickup_section.event_name}}</h2>
-                <h5>#{{pickup_section.category}}</h5>
-                <p class="pickup_description">{{pickup_section.description}}</p>
-                <dl>
-                    <div v-if:="pickup_section.start_date == pickup_section.end_date">
-                        <dt>開催予定日</dt>
-                        <dd>{{pickup_section.start_date}}</dd>
-                    </div>
-                    
-                    <div v-if:="pickup_section.start_date != pickup_section.end_date">
-                        <dt>開催期間</dt>
-                        <dd>{{pickup_section.start_date}}　～　{{pickup_section.end_date}}</dd>
-                    </div>
-                    
-                    <dt>開催地</dt>
-                    <dd>{{pickup_section.event_place}}</dd>
-                    
-                    <div v-if:="pickup_section.event_place_url != ''">
-                        <dt>ウェブサイト</dt>
-                        <dd><a class="url" v-bind:href= "pickup_section.event_place_url" target="_blank">{{ pickup_section.event_place_url }}</a></dd>
-                    </div>
-
-                    <div v-if="pickup_section.transportation != ''">
-                            <dt>交通手段</dt>
-                            <dd>{{ pickup_section.transportation }}</dd>
-                    </div>
-
-                    <dt>お問い合わせ先</dt>
-                    <dd>{{pickup_section.contact}} (TEL：{{pickup_section.contact_phone_nunber}}</dd>
-
-                    <div v-if="pickup_section.mail_addres != '' ">
-                        <dt>メールアドレス</dt>
-                        <dd>{{pickup_section.mail_addres}}</dd>
-                    </div>
-
-                    <div v-if:="pickup_section.remarks != '' ">
-                        <dt>その他</dt>
-                        <dd>{{pickup_section.remarks}}</dd>
-                    </div>
-                </dl>
-            </section>
-        </div>
-        
-        
         <script src="main.js"></script>  
           
     </body>
