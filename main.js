@@ -1,13 +1,27 @@
+var select_langth = new Vue({
+  el: '#change_Length',
+  data:{
+    langth: 10,
+  }
+})
+
 var page_display = new Vue({
   el: "#app",
   data () {
     return {
       currentPage: 0,  
       size: 10,        
-      pageRange: 5,   
-      items: []         
+      pageRange: 4,   
+      items: [] ,   
+
     }
   },
+  methods:{
+    copy_langht:function(){
+      return size = select_langth.langth
+    }
+  },
+
   mounted () {
     axios
        .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
@@ -15,11 +29,6 @@ var page_display = new Vue({
     });
   },
 
-  methods:{
-    size:function(){
-      return this.selectLength = this.size;
-    }
-  },
   computed: {
   
     pages () {
@@ -64,11 +73,9 @@ var page_display = new Vue({
   methods: {
     first () {
       this.currentPage = 0;
-      this.selectHandler();
     },
     last () {
       this.currentPage = this.pages - 1;
-      this.selectHandler();
     },
     prev () {
       if (0 < this.currentPage) {
@@ -79,29 +86,12 @@ var page_display = new Vue({
     next () {
       if (this.currentPage < this.pages - 1) {
         this.currentPage++;
-        this.selectHandler();
       }
     },
 
     pageSelect (index) {
       this.currentPage = index - 1;
-      this.selectHandler();
     },
-
-    selectHandler () {
-    }
-  }
+  
+},
 });
-//件数変更
-var Length_change = new Vue({
-  el: '#change_Length',
-  data:{
-    selectLength:10,
-  },
-  methods:{
-    LengthChange:function(){
-      this.selectLength = this.selectLength;
-    }
-  }
-})
-
