@@ -1,7 +1,35 @@
-var select_langth = new Vue({
+var serch = new Vue({
+  el: '#seachform',
+  data:{
+    keyword:'',
+    befor:'',
+  },
+  computed:{
+    filtered_events:function(){
+      for(var i in page_display.items){
+        items = page_display.items[i];
+        if( item.event_name.indexOf(this.keyword) !== -1 ||
+        item.category.indexOf(this.keyword)!==0 ||
+        item.description.indexOf(this.keyword)!==0 ||
+        item.contact.indexOf(this.keyword)!==0 ||
+        item.event_place.indexOf(this.keyword)!==0 ||
+        item.transportation.indexOf(this.keyword)!==0 ||
+        item.remarks.indexOf(this.keyword)!==0 ||
+        item.address.indexOf(this.keyword)!==0
+        ){
+          items.push(ites);
+        }
+      }
+      return items;
+    }
+  }
+
+})
+
+var select_length = new Vue({
   el: '#change_Length',
   data:{
-    langth: 10,
+    length: 10,
   }
 })
 
@@ -14,11 +42,6 @@ var page_display = new Vue({
       pageRange: 4,   
       items: [] ,   
 
-    }
-  },
-  methods:{
-    copy_langht:function(){
-      return size = select_langth.langth
     }
   },
 

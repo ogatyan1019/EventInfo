@@ -2,6 +2,9 @@
 <html lang="ja">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+   　　 <meta name="description" content="">
+    　　<meta name="author" content="">
         <title>福井県イベント情報</title>
         <link rel="stylesheet" href="stylesheet.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
@@ -12,11 +15,11 @@
         <header>
             <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>
               <form id="seachform" onsubmit="return false">
-                     <input id="search" type="search" v-model="key_words" placeholder="キーワード・タグ検索">
+                     <input id="search" type="search" v-model="keyword" placeholder="キーワード・タグ検索">
 　　　　　　         <div id="change_Length">
-                          <input name="change_length" type="radio"  id ="10" value="10" v-model="langth">10件ずつ表示
-                          <input name="change_length" type="radio"  id ="30"  value="30" v-model="langth">30件ずつ表示
-                          <input name="change_length" type="radio"  id ="1"  value="1" v-model="langth">全件表示
+                          <input name="change_length" type="radio"  id ="10" value="10" v-model="length">10件ずつ表示
+                          <input name="change_length" type="radio"  id ="30"  value="30" v-model="length">30件ずつ表示
+                          <input name="change_length" type="radio"  id ="1"  value="1" v-model="length">全件表示
                     </div>
                 </form>
         </header>
@@ -31,6 +34,9 @@
                             <div class="event_place">{{items.event_place}}</div>
                             <div class="category">カテゴリー：{{items.category}}</div>
                           </div>
+                          <button class="btn btn-primary" data-toggle="modal" data-target="#modal-example">
+                          詳細  
+                          </button>
                         </div>
                     </div>
                     <nav>
@@ -54,6 +60,7 @@
                     </nav>
                </div>
         </div>
+
 
         <script src="main.js"></script>  
           
