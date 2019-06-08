@@ -1,31 +1,3 @@
-var serch = new Vue({
-  el: '#seachform',
-  data:{
-    keyword:'',
-    befor:'',
-  },
-  computed:{
-    filtered_events:function(){
-      for(var i in page_display.items){
-        items = page_display.items[i];
-        if( item.event_name.indexOf(this.keyword) !== -1 ||
-        item.category.indexOf(this.keyword)!==0 ||
-        item.description.indexOf(this.keyword)!==0 ||
-        item.contact.indexOf(this.keyword)!==0 ||
-        item.event_place.indexOf(this.keyword)!==0 ||
-        item.transportation.indexOf(this.keyword)!==0 ||
-        item.remarks.indexOf(this.keyword)!==0 ||
-        item.address.indexOf(this.keyword)!==0
-        ){
-          items.push(ites);
-        }
-      }
-      return items;
-    }
-  }
-
-})
-
 var select_length = new Vue({
   el: '#change_Length',
   data:{
@@ -33,27 +5,25 @@ var select_length = new Vue({
   }
 })
 
-var page_display = new Vue({
+var display = new Vue({
   el: "#app",
-  data () {
-    return {
+  data : {
+    
+      keyword:'',
       currentPage: 0,  
       size: 10,        
       pageRange: 4,   
       items: [] ,   
-
-    }
   },
 
   mounted () {
     axios
        .get('https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json')
-       .then (function(res){page_display.items = res.data;
+       .then (function(res){display.items = res.data;
     });
   },
 
   computed: {
-  
     pages () {
       return Math.ceil(this.items.length / this.size);
     },
@@ -91,9 +61,31 @@ var page_display = new Vue({
     },
     isSelected (page) {
       return page - 1 === this.currentPage;
-    }
+    },
+
   },
+
   methods: {
+    filter_event:function(){
+     
+      return this.items.filter(
+        item =>(
+         item.eveny_name.indexOf(this.keyword) !== -1 ||
+         item.start_date.indexOf(this.keyword) !== -1 ||
+         item.descriptionindexOf(this.keyword) !== -1 ||
+         item.event_place.indexOf(this.keyword) !== -1 ||
+         item.event_place_url.indexOf(this.keyword) !== -1 ||
+         item.transportation.indexOf(this.keyword) !== -1 ||
+         item.contact.indexOf(this.keyword) !== -1 ||
+         item.contact_phone_number.indexOf(this.keyword) !== -1 ||
+         item.mail_address.indexOf(this.keyword) !== -1 ||
+         item.remarks.indexOf(this.keyword) !== -1 ||
+         item.category.indexOf(this.keyword) !== -1 
+        )&&this.state(items) != 'end'
+      ) 
+       
+     },
+
     first () {
       this.currentPage = 0;
     },
@@ -103,7 +95,6 @@ var page_display = new Vue({
     prev () {
       if (0 < this.currentPage) {
         this.currentPage--;
-        this.selectHandler();
       }
     },
     next () {
@@ -111,10 +102,14 @@ var page_display = new Vue({
         this.currentPage++;
       }
     },
+    
+    state:function(items){
+      var nowdate = [new Date().getFullYear,new Date().getMonth+1,new Date().getDate]
+      var endDate = items.end_date.split('/')
 
-    pageSelect (index) {
-      this.currentPage = index - 1;
-    },
-  
-},
+      if(endDate< nowdate)
+      return 'end';
+    }
+  },
 });
+

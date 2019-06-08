@@ -13,10 +13,9 @@
     </head>
     <body>
         <header>
-            <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>
-              <form id="seachform" onsubmit="return false">
-                     <input id="search" type="search" v-model="keyword" placeholder="キーワード・タグ検索">
-　　　　　　         <div id="change_Length">
+            <h1><a id="header-logo" href="index.html">福井県イベント情報</a></h1>    
+                      <form>
+                     <div id="change_Length">
                           <input name="change_length" type="radio"  id ="10" value="10" v-model="length">10件ずつ表示
                           <input name="change_length" type="radio"  id ="30"  value="30" v-model="length">30件ずつ表示
                           <input name="change_length" type="radio"  id ="1"  value="1" v-model="length">全件表示
@@ -26,43 +25,51 @@
 
         <div class="main">
              <div id="app" class="container">
-                    <div class="list-group" v-for="items in displayItems" >
-                         <div class="boxdesign">
+                     <input  type="text" v-model="keyword" >
+                    <div class="list-group" v-for="items in displayItems " >
+                        <div class="boxdesign">
                             <div class="start_date">{{items.start_date}}</div>
                             <div class="event_name">{{items.event_name}}</div>
+                            <p class="description">{{items.description}}</p>
                           <div class="float">
-                            <div class="event_place">{{items.event_place}}</div>
+                            <dl>
+                                <div class="event_place">開催地：{{items.event_place}}</div>
+                                <div class="event_url" v-if="items.event_place_url != ''">ウェブサイト：<a class="url" target="_blank"  v-bind:href="items.event_place_url">{{items.event_place_url}}</a></div>
+                                <div class="event_transportation" v-if="items.transportation != ''">交通手段：{{items.transportation}}</div>
+                                <div class="contact">お問い合わせ：{{items.contact}} (TEL:{{items.contact_phone_number}} <div v-if="items.mail_address !=  ''">, Mail：{{items.mail_address}}</div>)</div>
+                                <div class="ets" v-if="items.remarks"><p>その他：{{items.remarks}}</p></div>
+                            </dl>
                             <div class="category">カテゴリー：{{items.category}}</div>
-                          </div>
-                          <button class="btn btn-primary" data-toggle="modal" data-target="#modal-example">
-                          詳細  
-                          </button>
-                        </div>
-                    </div>
+                         </div>
+                        </div> 
+                    </div>      
+                            
                     <nav>
                         <ul class="pagination">
-                            <li class="page-item">
+                            <li class="page-items">
                                 <a v-on:click="first" class="page-link" href="#">&laquo;</a>
                             </li>
-                            <li class="page-item">
+                            <li class="page-items">
                                 <a v-on:lick="prev" class="page-link" href="#">&lt;</a>
                             </li>
-                            <li v-for="i in displayPageRange" class="page-item" :class="{active: i-1 === currentPage}">
+                            <li v-for="i in displayPageRange" class="page-items" :class="{active: i-1 === currentPage}">
                                 <a v-on:click="pageSelect(i)" class="page-link" href="#">{{ i }}</a>                               
                             </li>
-                            <li class="page-item">
+                            <li class="page-items">
                                 <a v-on:click="next" class="page-link" href="#">&gt;</a>
                             </li>
-                            <li class="page-item">
+                            <li class="page-items">
                                 <a v-on:click="last" class="page-link" href="#">&raquo;</a>
                             </li>
                         </ul>
                     </nav>
-               </div>
+            </div>
         </div>
-
+        
 
         <script src="main.js"></script>  
           
     </body>
+    
+    
 </html>
