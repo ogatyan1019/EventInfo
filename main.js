@@ -13,7 +13,7 @@ var display = new Vue({
       currentPage: 0,  
       size: 10,        
       pageRange: 4,   
-      items: [] ,   
+      items: [] ,
   },
 
   mounted () {
@@ -24,6 +24,30 @@ var display = new Vue({
   },
 
   computed: {
+    filtered_event:function(){
+        var items = [];
+        for(var i in this.items){
+          var item = this.items[i];
+          if(
+            item.eveny_name.indexOf(this.keyword) !== -1 ||
+          item.start_date.indexOf(this.keyword) !== -1 ||
+          item.descriptionindexOf(this.keyword) !== -1 ||
+          item.event_place.indexOf(this.keyword) !== -1 ||
+          item.event_place_url.indexOf(this.keyword) !== -1 ||
+          item.transportation.indexOf(this.keyword) !== -1 ||
+          item.contact.indexOf(this.keyword) !== -1 ||
+          item.contact_phone_number.indexOf(this.keyword) !== -1 || 
+          item.mail_address.indexOf(this.keyword) !== -1 ||
+          item.remarks.indexOf(this.keyword) !== -1 ||
+          item.category.indexOf(this.keyword) !== -1
+          )
+        {
+          items.push(item)
+        }
+      }
+        return items;
+    },
+
     pages () {
       return Math.ceil(this.items.length / this.size);
     },
@@ -66,26 +90,7 @@ var display = new Vue({
   },
 
   methods: {
-    filter_event:function(){
-     
-      return this.items.filter(
-        item =>(
-         item.eveny_name.indexOf(this.keyword) !== -1 ||
-         item.start_date.indexOf(this.keyword) !== -1 ||
-         item.descriptionindexOf(this.keyword) !== -1 ||
-         item.event_place.indexOf(this.keyword) !== -1 ||
-         item.event_place_url.indexOf(this.keyword) !== -1 ||
-         item.transportation.indexOf(this.keyword) !== -1 ||
-         item.contact.indexOf(this.keyword) !== -1 ||
-         item.contact_phone_number.indexOf(this.keyword) !== -1 ||
-         item.mail_address.indexOf(this.keyword) !== -1 ||
-         item.remarks.indexOf(this.keyword) !== -1 ||
-         item.category.indexOf(this.keyword) !== -1 
-        )&&this.state(items) != 'end'
-      ) 
-       
-     },
-
+    
     first () {
       this.currentPage = 0;
     },
@@ -103,13 +108,5 @@ var display = new Vue({
       }
     },
     
-    state:function(items){
-      var nowdate = [new Date().getFullYear,new Date().getMonth+1,new Date().getDate]
-      var endDate = items.end_date.split('/')
-
-      if(endDate< nowdate)
-      return 'end';
-    }
   },
 });
-
