@@ -2,7 +2,7 @@ var select_length = new Vue({
   el: '#change_Length',
   data:{
     length: 10,
-  }
+  },
 })
 
 var display = new Vue({
@@ -10,8 +10,7 @@ var display = new Vue({
   data : {
     
       keyword:'',
-      currentPage: 0,  
-      size: 10,        
+      currentPage: 0,         
       pageRange: 4,   
       items: [] ,
   },
@@ -28,7 +27,7 @@ var display = new Vue({
         var items = [];
         for(var i in this.items){
           var item = this.items[i];
-          if(
+          if((
             item.eveny_name.indexOf(this.keyword) !== -1 ||
           item.start_date.indexOf(this.keyword) !== -1 ||
           item.descriptionindexOf(this.keyword) !== -1 ||
@@ -40,7 +39,7 @@ var display = new Vue({
           item.mail_address.indexOf(this.keyword) !== -1 ||
           item.remarks.indexOf(this.keyword) !== -1 ||
           item.category.indexOf(this.keyword) !== -1
-          )
+          )&& this.state(item) != 'end')
         {
           items.push(item)
         }
@@ -48,8 +47,16 @@ var display = new Vue({
         return items;
     },
 
+    state:function(item){
+      var nowdate = [new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate()];
+      var end_event_date = item.end_date.split;
+
+      if(end_event_date < nowdate)
+        return 'end';
+    },
+
     pages () {
-      return Math.ceil(this.items.length / this.size);
+      return Math.ceil(this.items.length / select_length.length);
     },
     
     displayPageRange () {
@@ -80,8 +87,8 @@ var display = new Vue({
       return indexes;
     },
     displayItems () {
-      const head = this.currentPage * this.size;
-      return this.items.slice(head, head + this.size);
+      const head = this.currentPage * select_length.length;
+      return this.items.slice(head, head + select_length.length);
     },
     isSelected (page) {
       return page - 1 === this.currentPage;

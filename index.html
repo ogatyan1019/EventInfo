@@ -18,7 +18,7 @@
                      <div id="change_Length">
                           <input name="change_length" type="radio"  id ="10" value="10" v-model="length">10件ずつ表示
                           <input name="change_length" type="radio"  id ="30"  value="30" v-model="length">30件ずつ表示
-                          <input name="change_length" type="radio"  id ="1"  value="1" v-model="length">全件表示
+                          <input name="change_length" type="radio"  id ="1"  value="500" v-model="length">全件表示
                     </div>
                 </form>
         </header>
@@ -27,6 +27,7 @@
              <div id="app" class="container">
                      <input  type="text" v-model="keyword" >
                     <div class="list-group" v-for="items in displayItems " >
+                    
                         <div class="boxdesign">
                             <div class="start_date">{{items.start_date}}</div>
                             <div class="event_name">{{items.event_name}}</div>
@@ -40,9 +41,10 @@
                                 <div class="ets" v-if="items.remarks"><p>その他：{{items.remarks}}</p></div>
                             </dl>
                             <div class="category">カテゴリー：{{items.category}}</div>
-                         </div>
+                         
                         </div> 
-                    </div>      
+                    </div>  
+                    </div>    
                             
                     <nav>
                         <ul class="pagination">

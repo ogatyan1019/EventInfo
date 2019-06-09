@@ -61,6 +61,32 @@ header{
     margin-left: 15px;
 }
 
+.description{
+    color: black;
+    margin-left: 15px;
+    margin-top: 2px;
+}
+
+.event_url{
+    color: black;
+    margin-left: 15px;
+}
+
+.event_transportation{
+    color: black;
+    margin-left: 15px;
+}
+
+.contact{
+    color: black;
+    margin-left: 15px;
+}
+
+.ets{
+    color: black;
+    margin-left: 15px;
+}
+
 .category{
     color: black;
     font: size 5px;
